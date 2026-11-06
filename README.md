@@ -1,0 +1,1 @@
+# Minefun-ad-blocker
