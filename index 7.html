@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10131b">
+  <title>MineFun – Web-App</title>
+  <style>
+    :root { color-scheme: dark; --bg:#10131b; --panel:#191f2b; --line:#2a3445; --accent:#36d6c3; }
+    * { box-sizing: border-box; }
+    html, body { margin:0; width:100%; height:100%; overflow:hidden; background:var(--bg); color:#eef3fb; font:15px system-ui,-apple-system,sans-serif; }
+    header { height:54px; display:flex; align-items:center; gap:10px; padding:0 12px; background:var(--panel); border-bottom:1px solid var(--line); }
+    .brand { font-weight:750; letter-spacing:.2px; white-space:nowrap; }
+    .status { color:#aab6c8; font-size:12px; margin-left:auto; }
+    button { border:1px solid var(--line); background:#222c3b; color:#fff; border-radius:9px; padding:9px 12px; font:inherit; }
+    button:active { transform:scale(.98); }
+    main { height:calc(100% - 54px); display:flex; flex-direction:column; }
+    #frameWrap { position:relative; flex:1; min-height:0; background:#080a0f; }
+    iframe { width:100%; height:100%; border:0; display:block; background:#080a0f; }
+    #fallback { display:none; position:absolute; inset:0; padding:24px; text-align:center; align-content:center; gap:12px; background:#10131b; }
+    #fallback p { color:#b8c4d6; line-height:1.5; }
+    footer { padding:8px 12px calc(8px + env(safe-area-inset-bottom)); background:var(--panel); border-top:1px solid var(--line); color:#aab6c8; font-size:12px; }
+    a { color:var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">⛏ MineFun</div>
+    <button id="reload" type="button">Neu laden</button>
+    <button id="open" type="button">Extern öffnen ↗</button>
+    <div class="status">iPad / GitHub Pages</div>
+  </header>
+  <main>
+    <section id="frameWrap">
+      <iframe id="game" src="https://minefun.io/" title="MineFun"
+        allow="fullscreen; autoplay; gamepad"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div id="fallback">
+        <h2>MineFun lässt sich hier nicht einbetten</h2>
+        <p>Die Webseite kann das Anzeigen in einem eingebetteten Fenster aus Sicherheitsgründen sperren. Das kann diese GitHub-Datei nicht umgehen.</p>
+        <button type="button" id="fallbackOpen">MineFun direkt öffnen</button>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Hinweis: Diese Seite ist ein einfacher Einbettungs-Wrapper. Sie kann keine Werbung innerhalb von MineFun zuverlässig blockieren und keine JavaScript-Konsole in MineFun einschleusen. Wenn MineFun Einbettungen sperrt, öffne die Seite direkt.
+  </footer>
+  <script>
+    const frame = document.getElementById('game');
+    const openMinefun = () => window.open('https://minefun.io/', '_blank', 'noopener');
+    document.getElementById('reload').addEventListener('click', () => {
+      frame.src = 'https://minefun.io/';
+      document.getElementById('fallback').style.display = 'none';
+    });
+    document.getElementById('open').addEventListener('click', openMinefun);
+    document.getElementById('fallbackOpen').addEventListener('click', openMinefun);
+
+    // Cross-origin policy prevents this page from inspecting MineFun's document.
+    // Show a fallback if the browser reports an iframe loading error.
+    frame.addEventListener('error', () => {
+      document.getElementById('fallback').style.display = 'grid';
+    });
+  </script>
+</body>
+</html>
